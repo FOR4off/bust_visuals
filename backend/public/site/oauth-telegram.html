@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вход через Telegram — BUST VISUALS</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0B0B0F;color:#F2F2F7;
+       font-family:'Manrope','Inter',system-ui,sans-serif;text-align:center;padding:24px}
+  .box{border:1px solid #26262F;background:#14141B;border-radius:14px;padding:40px;max-width:420px}
+  h1{font-size:20px;letter-spacing:.06em;text-transform:uppercase}
+  p{color:#9A9AA8;font-size:14px;line-height:1.6}
+  .spinner{width:36px;height:36px;border:3px solid #26262F;border-top-color:#FFB63D;border-radius:50%;
+           margin:20px auto;animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  a{color:#FFB63D;text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>BUST VISUALS</h1>
+  <div class="spinner" id="spin"></div>
+  <p id="msg">Ожидаем подтверждение в Telegram… Не закрывайте эту страницу.</p>
+  <p style="margin-top:16px"><a href="https://t.me/BustVisualsBot">Открыть бота</a></p>
+</div>
+<script>
+  const params = new URLSearchParams(location.search);
+  const nonce = params.get('nonce');
+  const msg = document.getElementById('msg');
+  if (!nonce) { msg.textContent = 'Ссылка недействительна: нет nonce.'; document.getElementById('spin').style.display = 'none'; }
+  else {
+    let left = 150; // 5 минут
+    const t = setInterval(async () => {
+      if (--left <= 0) {
+        clearInterval(t);
+        msg.textContent = 'Время истекло. Начните вход заново.';
+        document.getElementById('spin').style.display = 'none';
+        return;
+      }
+      try {
+        const r = await fetch('/api/auth/oauth/telegram/poll?nonce=' + encodeURIComponent(nonce));
+        if (r.status === 404) { clearInterval(t); msg.textContent = 'Ссылка устарела. Начните вход заново.'; document.getElementById('spin').style.display = 'none'; return; }
+        const j = await r.json();
+        if (j.status === 'ok') {
+          clearInterval(t);
+          if (j.accessToken) localStorage.setItem('waffle_tokens', JSON.stringify({ access: j.accessToken, refresh: j.refreshToken }));
+          document.getElementById('spin').style.display = 'none';
+          msg.innerHTML = '✅ Готово! Возвращайтесь в BUST VISUALS.<br><a href="/site/">На сайт</a>';
+        }
+      } catch { /* backend перезапускается — продолжаем опрос */ }
+    }, 2000);
+  }
+</script>
+</body>
+</html>

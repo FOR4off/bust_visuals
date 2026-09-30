@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUST VISUALS — LOOK BETTER. PLAY FASTER. EXPRESS YOURSELF.</title>
+<meta name="description" content="Современный Minecraft Visual Client: FPS-оптимизация, HUD, визуальные эффекты, косметика, серверы и бесплатный Cosmetic Mod. Поддержка Minecraft 1.16.5, 1.21.4 и 1.21.11.">
+<!-- Замените на прод-домен перед деплоем -->
+<meta property="og:title" content="BUST VISUALS">
+<meta property="og:description" content="Minecraft Visual Client нового поколения. BEAUTY + PERFORMANCE + FUNCTIONALITY.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="http://localhost:4000/site/">
+<meta property="og:image" content="assets/hero.svg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="bg-bust" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="#/home">
+    <img src="assets/logo.svg" alt="" width="34" height="34">
+    <span>BUST<b>VISUALS</b></span>
+  </a>
+  <nav class="nav">
+    <a href="#/features">Фичи</a>
+    <a href="#/cosmetics">Косметика</a>
+    <a href="#/configs">Конфиги</a>
+    <a href="#/promocodes">Промокоды</a>
+    <a href="#/servers">Серверы</a>
+    <a href="#/premium" class="premium-link">Premium</a>
+    <a href="#/news">Новости</a>
+    <a href="#/status">Статус</a>
+    <a href="privacy.html">Политика</a>
+    <a href="terms.html">Соглашение</a>
+    <a href="support.html">Поддержка</a>
+  </nav>
+  <div class="topbar-right">
+    <a class="btn btn-ghost" href="#/download">DOWNLOAD</a>
+    <span id="userchip" class="userchip"></span>
+  </div>
+</header>
+
+<main id="app" class="app">
+  <section class="loading">Загрузка…</section>
+</main>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="brand"><img src="assets/logo.svg" alt="" width="26" height="26"><span>BUST<b>VISUALS</b></span></div>
+      <p class="muted">Minecraft Visual Client нового поколения.<br>LOOK BETTER. PLAY FASTER. EXPRESS YOURSELF.</p>
+    </div>
+    <div>
+      <h4>Продукт</h4>
+      <a href="#/download">Скачать</a>
+      <a href="#/features">Возможности</a>
+      <a href="#/cosmetics">Косметика</a>
+      <a href="#/configs">Магазин конфигов</a>
+    </div>
+    <div>
+      <h4>Сообщество</h4>
+      <a href="#/servers">СЕРВЕРЫ</a>
+      <a href="https://t.me/BustVisualsBot" target="_blank" rel="noopener">Telegram Bot</a>
+      <a href="https://discord.com" target="_blank" rel="noopener">Discord</a>
+      <a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.tiktok.com" target="_blank" rel="noopener">TikTok</a>
+      <a href="#/news">Новости</a>
+    </div>
+    <div>
+      <h4>Premium</h4>
+      <a href="#/premium">Тарифы</a>
+      <a href="#/status">Статус сервисов</a>
+    </div>
+    <div><h4>Документы</h4><a href="privacy.html">Политика конфиденциальности</a><a href="terms.html">Пользовательское соглашение</a><a href="support.html">Служба поддержки</a></div>
+  </div>
+  <p class="copy">© 2026 BUST VISUALS. Не является официальным продуктом Minecraft. Не аффилирован с Mojang и Microsoft.</p>
+</footer>
+
+<div id="modal" class="modal hidden"></div>
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
