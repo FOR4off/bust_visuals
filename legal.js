@@ -5,7 +5,7 @@
     if (!d?.html) return;
     const article = document.querySelector('.legal-card');
     if (!article) return;
-    article.innerHTML = `<p class="eyebrow">BUST VISUALS · актуальная редакция</p>${d.html}<p class="muted">Источник редакции: <a href="${d.source}" target="_blank" rel="noopener">Telegraph</a>.</p>`;
+    article.innerHTML = `<p class="eyebrow">BUST VISUALS · актуальная редакция</p>${d.html}`;
     document.title = d.title + ' — BUST VISUALS';
   }).catch(() => {});
 })();
