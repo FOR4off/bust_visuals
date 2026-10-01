@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://mc-heads.net data:; style-src 'self' 'unsafe-inline'">
+<title>BUST VISUALS</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="titlebar">
+  <div class="brand"><span class="brand-mark" aria-hidden="true">B</span>BUST<b>VISUALS</b></div>
+  <div class="tb-actions">
+    <button class="tb-btn" id="tb-min">─</button>
+    <button class="tb-btn" id="tb-max">□</button>
+    <button class="tb-btn close" id="tb-close">✕</button>
+  </div>
+</div>
+
+<div id="net-banner" class="net-banner hidden">⚠️ Backend недоступен — запустите backend (npm start) и проверьте соединение</div>
+
+<!-- WELCOME -->
+<section id="s-welcome" class="screen welcome">
+  <div class="bust-logo big"></div>
+  <h1>BUST <span>VISUALS</span></h1>
+  <p class="tag">LOOK BETTER. PLAY FASTER. EXPRESS YOURSELF.</p>
+  <button class="btn primary xl" id="wl-start">НАЧАТЬ</button>
+  <p class="muted small">v1.0.0 · <a href="#" id="wl-logs">открыть логи</a></p>
+</section>
+
+<!-- AUTH -->
+<section id="s-auth" class="screen auth hidden">
+  <div class="auth-card">
+    <div class="tabs">
+      <button class="tab active" data-t="login">Вход</button>
+      <button class="tab" data-t="register">Регистрация</button>
+    </div>
+    <form class="stack" id="auth-form">
+      <label class="f" id="f-username" style="display:none">Ник<input name="username" placeholder="Player"></label>
+      <label class="f">Email или ник<input name="identifier" type="text" required autocomplete="username" placeholder="you@example.com или Player"></label>
+      <label class="f">Пароль<input name="password" type="password" required minlength="6" placeholder="••••••"></label>
+      <p class="err" id="auth-err"></p>
+      <button class="btn primary" type="submit" id="auth-submit">Войти</button>
+    </form>
+    <p class="muted small">Используется локальный профиль BUST VISUALS и локальный Minecraft-ник.</p>
+  </div>
+</section>
+
+<!-- SETUP MC ACCOUNT -->
+<section id="s-mcsetup" class="screen auth hidden">
+  <div class="auth-card">
+    <h2>Minecraft аккаунт</h2>
+    <p class="muted small">Выберите способ входа в Minecraft. Можно добавить оба и переключаться.</p>
+    <div class="mc-options">
+      <div class="mc-opt">
+        <h3>Офлайн-ник</h3>
+        <p class="muted small">Без лицензии — по нику (offline-режим серверов)</p>
+        <form class="stack" id="offline-form">
+          <label class="f">Ник<input name="username" required placeholder="Steve" pattern="[A-Za-z0-9_]{3,16}"></label>
+          <button class="btn ghost" type="submit">Создать офлайн-аккаунт</button>
+        </form>
+      </div>
+    </div>
+    <div id="mc-list"></div>
+    <button class="btn primary xl" id="mc-done">ПРОДОЛЖИТЬ</button>
+  </div>
+</section>
+
+<!-- MAIN -->
+<section id="s-main" class="screen main hidden">
+  <aside class="sidebar">
+    <nav id="nav">
+      <a data-s="home" class="active">🏠 Главная</a>
+      <a data-s="servers">🌐 Серверы</a>
+      <a data-s="cosmetics">🧣 Косметика</a>
+      <a data-s="premium">✦ Premium</a>
+      <a data-s="promocodes">🎁 Промокоды</a>
+      <a data-s="accounts">👥 Аккаунты</a>
+      <a data-s="configs">🧩 Конфиги</a>
+      <a data-s="workshop">🛠 Мастерская</a>
+      <a data-s="telegram">✈️ Telegram</a>
+      <a data-s="news">📰 Новости</a>
+      <a data-s="profile">👤 Профиль</a>
+      <a data-s="settings">⚙️ Настройки</a>
+      <a data-s="client">🎛️ Клиент</a>
+    </nav>
+  </aside>
+  <div class="content-col">
+    <header class="topline">
+      <div></div>
+      <div class="topline-right">
+        <span class="premium-chip hidden" id="chip-premium">✦ PREMIUM</span>
+        <span class="user-chip" id="chip-user"></span>
+      </div>
+    </header>
+    <main id="view" class="view"></main>
+  </div>
+</section>
+
+<!-- LAUNCH OVERLAY -->
+<div id="launch-overlay" class="modal hidden">
+  <div class="box launch-box">
+    <h3 id="lp-title">Запуск Minecraft</h3>
+    <div class="progress"><div class="progress-bar" id="lp-bar"></div></div>
+    <p class="muted small" id="lp-detail"></p>
+    <button class="btn ghost" id="lp-close" style="display:none">Готово</button>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="app.js"></script>
+</body>
+</html>
