@@ -449,7 +449,6 @@
       ['🧣', 'Косметика', 'Кейпы, крылья, ауры, следы, эмоции и значки. Бесплатный мод для просмотра.'],
       ['🎛', 'HUD', 'Полностью перетаскиваемый HUD: Keystrokes, Target HUD, CPS, Ping и другое.'],
       ['⚡', 'Performance', 'Пресеты LOW-END…ULTRA, Reduced Motion, профили под PvP/BedWars/SkyWars/SMP.'],
-      ['🌐', 'Серверы', 'BUST VISUALS Network с реальным статусом, каталог «СЕРВЕРА PRO», favorites и recent.'],
       ['🧩', 'Конфиги', 'Магазин конфигов сообщества: публикуй свои профили в один клик.'],
       ['🎨', 'Кастомизация', 'Accent-цвета, UI-звуки, темы профиля — интерфейс под тебя.'],
     ];
@@ -499,7 +498,7 @@
       finally { button.disabled = false; }
     };
   }
-  const ROUTES = { promocodes: promoPage, home: pages.home, features: pages.features, cosmetics: pages.cosmetics, premium: pages.premium, download: pages.download, servers: pages.servers, news: pages.news, status: pages.status, configs: pages.configs };
+  const ROUTES = { promocodes: promoPage, home: pages.home, features: pages.features, cosmetics: pages.cosmetics, premium: pages.premium, download: pages.download, servers: pages.servers, news: pages.news, configs: pages.configs };
   let currentRoute = null;
   async function route() {
     pages._statusTimer && clearInterval(pages._statusTimer);
