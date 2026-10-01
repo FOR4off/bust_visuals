@@ -294,7 +294,7 @@
       } catch {
         $('#dl-launcher').innerHTML = `<div class="card" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
           <div style="flex:1;min-width:240px"><h3>BUST VISUALS LAUNCHER</h3><p class="muted">Windows · последняя опубликованная сборка</p></div>
-          <a class="btn btn-primary" href="https://github.com/FOR4off/bust_visuals/releases/latest/download/BustVisualsLauncher.exe" target="_blank" rel="noopener">СКАЧАТЬ EXE</a></div>`;
+          <div class="chips"><a class="btn btn-primary" href="https://github.com/FOR4off/bust_visuals/releases/latest/download/BustVisualsLauncher.exe" target="_blank" rel="noopener">EXE</a><a class="btn btn-ghost" href="https://github.com/FOR4off/bust_visuals/releases/latest/download/BUST-Visuals-Setup.zip" target="_blank" rel="noopener">SETUP</a></div></div>`;
       }
       try {
         const { versions } = await api('/api/versions');
@@ -499,7 +499,7 @@
 
   function apiFail(sel) {
     const el = document.querySelector(sel);
-    if (el) el.innerHTML = '<div class="card"><b>BUST VISUALS</b><p class="muted">Каталог доступен. Данные аккаунта появятся после подключения API.</p></div>';
+    if (el) el.innerHTML = '<div class="card"><b>BUST VISUALS</b><p class="muted">Каталог BUST VISUALS</p></div>';
   }
 
   // ---------- router ----------
