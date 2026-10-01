@@ -4,6 +4,17 @@
   const app = $('#app');
   const API = ''; // same origin
 
+  // GitHub Pages serves the static client without the Node API. Keep public,
+  // non-sensitive catalog data available so the site never gets stuck on a
+  // spinner; authenticated and payment actions still require the API.
+  const STATIC_DATA = {
+    servers: [
+      { id: 'bust-network', name: 'BUST VISUALS Network', ipDisplay: '213.171.18.147:31614', mcVersion: '1.16.5', gameMode: 'SMP', isFeatured: 1, isTempIp: 1, status: { state: 'UNKNOWN', players: 0, maxPlayers: 0, latencyMs: null } },
+      { id: 'bust-creative', name: 'BUST Creative', ipDisplay: '213.171.18.147:31615', mcVersion: '1.16.5', gameMode: 'Creative', isFeatured: 0, isTempIp: 1, status: { state: 'UNKNOWN', players: 0, maxPlayers: 0, latencyMs: null } },
+      { id: 'bust-anarchy', name: 'BUST Anarchy', ipDisplay: '213.171.18.147:31616', mcVersion: '1.16.5', gameMode: 'Anarchy', isFeatured: 0, isTempIp: 1, status: { state: 'UNKNOWN', players: 0, maxPlayers: 0, latencyMs: null } },
+    ],
+  };
+
   // ---------- tokens ----------
   const tokens = {
     get: () => { try { return JSON.parse(localStorage.getItem('waffle_tokens')); } catch { return null; } },
@@ -454,7 +465,14 @@
       const grid = rest.length ? `<div class="section-title">СЕРВЕРА PRO</div><div class="server-grid">${rest.map((s) => serverCard(s)).join('')}</div>` : '';
       document.querySelector(sel).innerHTML = heroOnly ? html : html + grid;
       bindServerButtons(document.querySelector(sel), servers);
-    } catch { apiFail(sel); }
+    } catch {
+      const node = document.querySelector(sel);
+      if (!node) return;
+      const featured = STATIC_DATA.servers.find((s) => s.isFeatured) || STATIC_DATA.servers[0];
+      const rest = STATIC_DATA.servers.filter((s) => s !== featured);
+      node.innerHTML = serverCard(featured, true) + (rest.length ? `<div class="section-title">СЕРВЕРА PRO</div><div class="server-grid">${rest.map((s) => serverCard(s)).join('')}</div>` : '');
+      bindServerButtons(node, STATIC_DATA.servers);
+    }
   }
 
   function bindServerButtons(root, servers) {
@@ -468,10 +486,7 @@
 
   function apiFail(sel) {
     const el = document.querySelector(sel);
-    if (el) el.innerHTML = '<p class="muted">⏳ Подключаемся к серверу…</p>';
-    if (!apiFail._t) apiFail._t = setInterval(() => {
-      fetch('/api/health').then((r) => { if (r.ok) { clearInterval(apiFail._t); apiFail._t = null; route(); } }).catch(() => {});
-    }, 4000);
+    if (el) el.innerHTML = '<div class="card"><b>Сайт работает в статическом режиме</b><p class="muted">Каталог и страницы доступны. Для аккаунта, покупок и синхронизации нужен запущенный сервер BUST VISUALS.</p></div>';
   }
 
   // ---------- router ----------
