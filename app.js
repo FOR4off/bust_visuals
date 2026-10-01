@@ -2,7 +2,10 @@
 (() => {
   const $ = (sel) => document.querySelector(sel);
   const app = $('#app');
-  const API = ''; // same origin
+  // Set `window.BUST_API_BASE` on a self-hosted build (for example
+  // https://api.example.com). GitHub Pages has no server runtime, so an empty
+  // value is intentionally treated as a static site.
+  const API = String(window.BUST_API_BASE || localStorage.getItem('bust_api_base') || '').replace(/\/$/, '');
 
   // GitHub Pages serves the static client without the Node API. Keep public,
   // non-sensitive catalog data available so the site never gets stuck on a
@@ -27,14 +30,17 @@
     if (body) headers['Content-Type'] = 'application/json';
     const t = tokens.get();
     if (auth && t?.access) headers.Authorization = 'Bearer ' + t.access;
-    let res = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    let res;
+    try { res = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined }); }
+    catch { throw Object.assign(new Error('Сервер аккаунтов не подключён. Откройте сайт с настроенным API или запустите launcher.'), { code: 'api_unavailable' }); }
     if (res.status === 401 && auth && t?.refresh) {
       const r = await fetch(API + '/api/auth/refresh', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ refreshToken: t.refresh }) });
       if (r.ok) {
         const j = await r.json();
         tokens.set({ access: j.accessToken, refresh: j.refreshToken });
         headers.Authorization = 'Bearer ' + j.accessToken;
-        res = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+        try { res = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined }); }
+        catch { throw Object.assign(new Error('Сервер аккаунтов не подключён. Откройте сайт с настроенным API или запустите launcher.'), { code: 'api_unavailable' }); }
       } else tokens.clear();
     }
     const text = await res.text();
@@ -111,7 +117,7 @@
         tokens.set({ access: r.accessToken, refresh: r.refreshToken });
         user = r.user; renderUserchip(user); closeModal(); toast('Добро пожаловать, ' + r.user.username + '!'); route();
         if (after) after(r.user);
-      } catch (err) { toast(err.message, true); }
+      } catch (err) { toast(err.code === 'api_unavailable' ? 'Вход временно недоступен: API сайта не настроен.' : err.message, true); }
     });
   }
 
@@ -285,7 +291,11 @@
           const b = e.target.closest('[data-dl]'); if (!b || !b.dataset.dl) return;
           window.open(b.dataset.dl, '_blank', 'noopener');
         });
-      } catch { $('#dl-launcher').innerHTML = '<p class="muted">Launcher: обновления не опубликованы</p>'; }
+      } catch {
+        $('#dl-launcher').innerHTML = `<div class="card" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+          <div style="flex:1;min-width:240px"><h3>BUST VISUALS LAUNCHER</h3><p class="muted">Windows · последняя опубликованная сборка</p></div>
+          <a class="btn btn-primary" href="https://github.com/FOR4off/bust_visuals/releases/latest/download/BustVisualsLauncher.exe" target="_blank" rel="noopener">СКАЧАТЬ EXE</a></div>`;
+      }
       try {
         const { versions } = await api('/api/versions');
         $('#mc-chips').innerHTML = versions.map((v) => `<button class="chip" data-mc="${esc(v.mc)}">${esc(v.mc)}${v.isLatest ? ' ·LATEST' : ''}</button>`).join('');
@@ -306,7 +316,11 @@
                  <div style="flex:1"><h3>Cosmetic Mod для Minecraft ${esc(v.mc)}</h3><p class="muted" style="font-size:13px">В разработке — скоро</p></div>
                  <span class="chip" style="cursor:default">Скоро</span></div>`;
         }
-      } catch { apiFail('#dl-cosmetic'); }
+      } catch {
+        const versions = [{ mc: '1.16.5', isLatest: false, cosmetic: { status: 'ready', downloadUrl: 'assets/downloads/bust-visuals-cosmetics-1.16.5.jar' } }];
+        $('#mc-chips').innerHTML = '<button class="chip active" data-mc="1.16.5">1.16.5 · Fabric</button>';
+        $('#dl-cosmetic').innerHTML = `<div class="card" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="flex:1"><h3>Cosmetic Mod для Minecraft 1.16.5</h3><p class="muted">Fabric · готов к установке</p></div><a class="btn btn-primary" href="${versions[0].cosmetic.downloadUrl}" download>СКАЧАТЬ JAR</a></div>`;
+      }
     },
 
     async servers() {
