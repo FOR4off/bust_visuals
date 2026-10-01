@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "waffle-cosmetics",
+  "version": "${version}",
+  "name": "BUST VISUALS Cosmetic Mod",
+  "description": "БЕСПЛАТНЫЙ мод: видеть косметику BUST VISUALS других игроков (кейпы, крылья, ауры, следы, значки). Без полного клиента.",
+  "authors": ["BUST VISUALS"],
+  "license": "All-Rights-Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["ru.wafflevisuals.cosmetics.CosmeticMod"]
+  },
+  "mixins": ["waffle-cosmetics.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "fabric": "*",
+    "minecraft": "~1.16.5"
+  }
+}
