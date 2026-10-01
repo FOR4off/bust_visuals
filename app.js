@@ -499,7 +499,7 @@
 
   function apiFail(sel) {
     const el = document.querySelector(sel);
-    if (el) el.innerHTML = '<div class="card"><b>Сайт работает в статическом режиме</b><p class="muted">Каталог и страницы доступны. Для аккаунта, покупок и синхронизации нужен запущенный сервер BUST VISUALS.</p></div>';
+    if (el) el.innerHTML = '<div class="card"><b>BUST VISUALS</b><p class="muted">Каталог доступен. Данные аккаунта появятся после подключения API.</p></div>';
   }
 
   // ---------- router ----------

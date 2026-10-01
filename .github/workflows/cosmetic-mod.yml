@@ -1,0 +1,32 @@
+name: Build BUST Visuals Fabric mod
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'cosmetic-mod/**'
+      - 'scripts/build-mod-version.mjs'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        mc-version: ['1.16.5', '1.21.4', '1.21.11']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Generate version project
+        run: node scripts/build-mod-version.mjs ${{ matrix.mc-version }}
+      - name: Build Fabric mod
+        working-directory: cosmetic-mod-builds/${{ matrix.mc-version }}
+        run: gradle build --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bust-visuals-fabric-mod-${{ matrix.mc-version }}
+          path: cosmetic-mod-builds/${{ matrix.mc-version }}/build/libs/*.jar
